@@ -111,6 +111,17 @@ let p = new util.TextEncoder("utf-8").encode("aaaaaaaa");
 let h;
 let ftdi = new FTD2XX.FTDI()
 async function Test() {
+
+  // DWORD iVID, iPID;
+	// DWORD iOldVID, iOldPID;
+	// // get our VID and PID from config file or other source
+	// FT_GetVIDPID(&iOldVID, &iOldPID);	// get original VID and PID
+	// FT_SetVIDPID(iVID, iPID);							// use our VID and PID
+	// ftStatus = FT_ListDevices(pArg1, pArg2, Flags);		// Call FTDI function
+	// FT_SetVIDPID(iOldVID, iOldPID);
+
+
+
   console.log(await FTD2XX.FTDI.getDeviceList())
   console.log(await ftdi.openByDescription('FT232R USB UART'))
   await ftdi.setBaudRate(38400)

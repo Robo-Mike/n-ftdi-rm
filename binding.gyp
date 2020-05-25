@@ -75,6 +75,23 @@
               ]
             }
           }
+        ],
+        [
+          "OS == 'linux'",
+          {
+            'include_dirs+': [
+              '/usr/local/include',
+              '/usr/local/include/libftd2xx/'
+            ],
+            'ldflags': [
+              '-Wl,-Map=output.map',
+            ],
+            'link_settings': {
+              'libraries': [
+                '-lftd2xx'
+              ]
+            }
+          }
         ]
       ],
     }
