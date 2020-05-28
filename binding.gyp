@@ -25,7 +25,8 @@
         "./src/ft_write_op.cc",
         "./src/ft_get_queue_status_op.cc",
         "./src/ft_get_status_op.cc",
-        "./src/ft_read_op.cc"
+        "./src/ft_read_op.cc",
+        "./src/ft_set_vid_pid_op.cc"
       ],
       "include_dirs": [
         "./src",

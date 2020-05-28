@@ -112,30 +112,40 @@ let h;
 let ftdi = new FTD2XX.FTDI()
 async function Test() {
 
-  // DWORD iVID, iPID;
-	// DWORD iOldVID, iOldPID;
-	// // get our VID and PID from config file or other source
-	// FT_GetVIDPID(&iOldVID, &iOldPID);	// get original VID and PID
-	// FT_SetVIDPID(iVID, iPID);							// use our VID and PID
-	// ftStatus = FT_ListDevices(pArg1, pArg2, Flags);		// Call FTDI function
-	// FT_SetVIDPID(iOldVID, iOldPID);
-
-
-
-  console.log(await FTD2XX.FTDI.getDeviceList())
-  console.log(await ftdi.openByDescription('FT232R USB UART'))
-  await ftdi.setBaudRate(38400)
-  console.log( await ftdi.getDeviceInfo())
-  console.log( await ftdi.write(Buffer.from("aaaaaaaa"), 1))
-
-  let qqq = await ftdi.getQueueStatus()
-  while(qqq.rxQueue == 0) {
-    qqq =  await ftdi.getQueueStatus()
+  const iVID = 0x0403;
+  const iPID = 0xfaf0;
+	// Would need to call multiple times with each VID/PID  used
+  console.log('set vidpid result is' + await FTD2XX.FTDI.setVIdPId(iVID, iPID))
+  const deviceInfoListResult = await FTD2XX.FTDI.getDeviceList()
+  console.log('getdevice list count is' + deviceInfoListResult.deviceList.length)
+  for (let i = 0; i < deviceInfoListResult.deviceList.length; i++)
+  {
+    console.log('device ' + i + ' details - serial no : ' + deviceInfoListResult.deviceList[i].serialNumber +
+    ', description : ' + deviceInfoListResult.deviceList[i].description  )
   }
-  console.log(qqq);
-  console.log(await ftdi.read(rxB, qqq.rxQueue))
-  str = rxB.toString();
-  console.log(str)
-  console.log(str.length)
+  if (deviceInfoListResult.deviceList.length > 0)
+  {
+    const openFTResult = await ftdi.openBySerialNumber(deviceInfoListResult.deviceList[0].serialNumber)
+    console.log('open first device by serial FT_RESULT :' + openFTResult )
+    if (openFTResult===0)
+    {
+      ftdi.close()
+    }
+  }
+
+  // console.log(await ftdi.openByDescription('FT232R USB UART'))
+  // await ftdi.setBaudRate(38400)
+  // console.log( await ftdi.getDeviceInfo())
+  // console.log( await ftdi.write(Buffer.from("aaaaaaaa"), 1))
+  //
+  // let qqq = await ftdi.getQueueStatus()
+  // while(qqq.rxQueue == 0) {
+  //   qqq =  await ftdi.getQueueStatus()
+  // }
+  // console.log(qqq);
+  // console.log(await ftdi.read(rxB, qqq.rxQueue))
+  // str = rxB.toString();
+  // console.log(str)
+  // console.log(str.length)
 }
 Test()

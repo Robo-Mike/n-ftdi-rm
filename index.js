@@ -1241,6 +1241,28 @@ class FTDI {
     if (!this._canSetBitMode(ftDevice, bitMode)) errorHandler(ftStatus, FT_ERROR.FT_INVALID_BITMODE)
     return _ftdiAddon.setBitMode(this._ftHandle, mask, bitMode)
   }
+
+  /**
+   * Synchronously adds VendorId and ProductId VID and PID combination to the internal device list table.
+   * This will allow the driver to load for the specified VID and PID combination.
+   * @param {number} vendorId Sets the VendorId
+   * @param {number} productId Sets the ProductId
+   * @returns {FT_STATUS}
+   */
+  static setVIdPIdSync (vendorId, productId) {
+    return _ftdiAddon.setVIdPIdSync(vendorId, productId)
+  }
+
+  /**
+   * Asynchronously adds VendorId and ProductId VID and PID combination to the internal device list table.
+   * This will allow the driver to load for the specified VID and PID combination.
+   * @param {number} vendorId Sets the VendorId
+   * @param {number} productId Sets the ProductId
+   * @returns {Promise<FT_STATUS>}
+   */
+  static async setVIdPId (vendorId, productId) {
+    return _ftdiAddon.setVIdPId(vendorId, productId)
+  }
 }
 
 module.exports = {
