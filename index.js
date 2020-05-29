@@ -662,7 +662,7 @@ function errorHandler (ftStatus, ftErrorCondition) {
  * Class wrapper for FTD2XX.DLL
  */
 class FTDI {
-  constructor (baudRate = 9600, flowControl = FT_FLOW_CONTROL.FT_FLOW_NONE) {
+  constructor (baudRate = 9600, flowControl = FT_FLOW_CONTROL.FT_FLOW_NONE, xOn = 0x11, xOff = 0x13) {
     /**
      * @type {object}
      * @private
@@ -670,6 +670,8 @@ class FTDI {
     this._ftHandle = null
     this._baudRate = baudRate
     this._flowControl = flowControl
+    this._xOn = xOn
+    this._xOff = xOff
   }
 
   _setUpFtdiDeviceSync () {
@@ -679,9 +681,7 @@ class FTDI {
     const parity = FT_PARITY.FT_PARITY_NONE
     let ftStatus = _ftdiAddon.setDataCharacteristicsSync(this._ftHandle, wordLength, stopBits, parity)
     if (ftStatus !== FT_STATUS.FT_OK) return ftStatus
-    const xon = 0x11
-    const xoff = 0x13
-    ftStatus = _ftdiAddon.setFlowControlSync(this._ftHandle, this._flowControl, xon, xoff)
+    ftStatus = _ftdiAddon.setFlowControlSync(this._ftHandle, this._flowControl, this._xOn, this._xOff)
     if (ftStatus !== FT_STATUS.FT_OK) return ftStatus
     // Initialise Baud rate
     return _ftdiAddon.setBaudRateSync(this._ftHandle, this._baudRate)
@@ -694,9 +694,7 @@ class FTDI {
     const parity = FT_PARITY.FT_PARITY_NONE
     let ftStatus = await _ftdiAddon.setDataCharacteristics(this._ftHandle, wordLength, stopBits, parity)
     if (ftStatus !== FT_STATUS.FT_OK) return ftStatus
-    const xon = 0x11
-    const xoff = 0x13
-    ftStatus = await _ftdiAddon.setFlowControl(this._ftHandle, this._flowControl, xon, xoff)
+    ftStatus = await _ftdiAddon.setFlowControl(this._ftHandle, this._flowControl, this._xOn, this._xOff)
     if (ftStatus !== FT_STATUS.FT_OK) return ftStatus
     // Initialise Baud rate
     return _ftdiAddon.setBaudRate(this._ftHandle, this._baudRate)
