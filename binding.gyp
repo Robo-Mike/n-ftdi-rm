@@ -42,6 +42,8 @@
         [
           "OS == 'win'",
           {
+            "sources!":["./src/ft_set_vid_pid_op.cc"],
+            "sources":["./src/ft_set_vid_pid_op_win.cc"],
             "link_settings": {
               "conditions": [
                 [
